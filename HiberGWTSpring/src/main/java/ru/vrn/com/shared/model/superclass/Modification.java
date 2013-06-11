@@ -6,17 +6,17 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class Modification extends Versioned{
+public class Modification extends Versioned {
 
-	@Column(name = "dateLastMofification", nullable = false)
-	private Timestamp DateLastMofification;
+	@Column(name = "date_Last_Modification", nullable = false)
+	private Timestamp DateLastModification;
 
 	public Timestamp getDateLastMofification() {
-		return DateLastMofification;
+		return DateLastModification;
 	}
 
 	public void setDateLastMofification(Timestamp dateLastMofification) {
-		DateLastMofification = dateLastMofification;
+		DateLastModification = dateLastMofification;
 	}
 
 }

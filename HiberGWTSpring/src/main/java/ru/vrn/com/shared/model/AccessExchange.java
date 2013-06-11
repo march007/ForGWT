@@ -1,23 +1,30 @@
 package ru.vrn.com.shared.model;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import ru.vrn.com.shared.model.superclass.Access;
 
+
 @Entity
-@Table(name = "AccessExchange")
-public class AccessExchange extends Access{
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TYPE")
+@Table(name = "Access_Exchange")
+public class AccessExchange extends Access implements Serializable {
 
-	@Column(name = "EXCHANGE_ACCESS", columnDefinition = "VARCHAR")
-	private String exchangeAccess;
-
-	public String getExchangeAccess() {
-		return exchangeAccess;
-	}
-
-	public void setExchangeAccess(String exchangeAccess) {
-		this.exchangeAccess = exchangeAccess;
-	}
+	
+//	protected String emailNew;
+//
+//	public String getEmailNew() {
+//		return emailNew;
+//	}
+//
+//	public void setEmailNew(String emailNew) {
+//		this.emailNew = emailNew;
+//	}
 }

@@ -44,15 +44,15 @@ public class GreetingServiceDao {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		List<User> list = session.createSQLQuery("SELECT* FROM PERSON a where id = 12").addEntity(User.class).list();
+		List<UsersAD> list = session.createSQLQuery("SELECT* FROM USERS_AD a where id = 1").addEntity(UsersAD.class).list();
 		
 		session.getTransaction().commit();
 //		session.close();
 //		session.flush();
-		System.out.println("*****************  " + list.get(0).getLogin());
-		System.out.println("*****************  " + list.get(0).getPassword());
-		System.out.println("*****************  " + list.get(0).getId());
-		System.out.println("*****************  " + list.get(0).getMail());
+		System.out.println("*****************  " + list.get(0).getAccount());
+		System.out.println("*****************  " + list.get(0).getDepartment());
+		System.out.println("*****************  " + list.get(0).getName());
+		
 		
 //		Session session = sessionFactory.openSession();
 		session.beginTransaction();
@@ -61,7 +61,7 @@ public class GreetingServiceDao {
 //		query.
 //		Query query
 		
-		List<UsersAD> list1 = session.createSQLQuery("SELECT * FROM USERS_AD where id = 35").addEntity(UsersAD.class).list();
+		List<UsersAD> list1 = session.createSQLQuery("SELECT * FROM USERS_AD where id = 3").addEntity(UsersAD.class).list();
 		
 		session.getTransaction().commit();
 		session.close();

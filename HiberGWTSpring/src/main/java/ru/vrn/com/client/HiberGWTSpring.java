@@ -144,7 +144,7 @@ public class HiberGWTSpring implements EntryPoint {
 			}
 			
 			private void sendNameToServer1() {
-				greetingService.get(35, new AsyncCallback<Void>() {
+				greetingService.get(3, new AsyncCallback<Void>() {
 					
 					public void onSuccess(Void result) {
 						dialogBox.setText("Remote Procedure Call");

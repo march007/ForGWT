@@ -9,22 +9,22 @@ import javax.persistence.Table;
 import ru.vrn.com.shared.model.superclass.Versioned;
 
 @Entity
-@Table(name = "AccessFileResoursesDetail")
+@Table(name = "Access_File_Resourses_Detail")
 public class AccessFileResoursesDetail extends Versioned {
 
-	// @OneToMany(mappedBy = "id", targetEntity = AccessFileResourses.class)
-	// private Set<AccessFileResourses> accessFileResoursesItems;
+//	@OneToMany(mappedBy = "id", targetEntity = AccessFileResourses.class)
+//	private Set<AccessFileResourses> accessFileResoursesItems;
 
 	@ManyToOne
-	@JoinColumn(name = "id_AccessFileResourses")
+	@JoinColumn(name = "id_Access_File_Resourses")
 	private AccessFileResourses accessFileResourses;
 
-	@Column(name = "PATH", columnDefinition = "VARCHAR", nullable = false)
+	@Column(name = "PATH", columnDefinition = "VARCHAR(255)", nullable = false)
 	private String path;
 
-	// public Set<AccessFileResourses> getAccessFileResoursesItems() {
-	// return accessFileResoursesItems;
-	// }
+//	 public Set<AccessFileResourses> getAccessFileResoursesItems() {
+//	 return accessFileResoursesItems;
+//	 }
 
 	public AccessFileResourses getDictionary() {
 		return accessFileResourses;
@@ -34,10 +34,10 @@ public class AccessFileResoursesDetail extends Versioned {
 		return path;
 	}
 
-	// public void setAccessFileResoursesItems(
-	// Set<AccessFileResourses> accessFileResoursesItems) {
-	// this.accessFileResoursesItems = accessFileResoursesItems;
-	// }
+//	 public void setAccessFileResoursesItems(
+//	 Set<AccessFileResourses> accessFileResoursesItems) {
+//	 this.accessFileResoursesItems = accessFileResoursesItems;
+//	 }
 
 	public void setDictionary(AccessFileResourses dictionary) {
 		this.accessFileResourses = dictionary;

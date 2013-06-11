@@ -2,6 +2,7 @@ package ru.vrn.com.server;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ru.vrn.com.client.GreetingService;
 import ru.vrn.com.server.dao.GreetingServiceDao;
@@ -78,7 +79,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	 * usersAD.getName()); }
 	 */
 
-//	@Transactional(readOnly = true)
+	@Transactional
 	public void get(int i) {
 		System.out.println("******************************** start : " + i);
 		UsersAD usersAD = dao.get(new Long(i));

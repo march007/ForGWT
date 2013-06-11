@@ -65,8 +65,7 @@
 				<value>ru.vrn.com.shared.model.superclass.Versioned</value>
 				<value>ru.vrn.com.shared.model.UsersAD</value>
 				<value>ru.vrn.com.shared.model.User</value>
-				<value>ru.vrn.com.shared.model.ListOfMonitoring</value>
-				<value>ru.vrn.com.shared.model.ListOfBases1C</value>
+				<value>ru.vrn.com.shared.model.ListOfMonitoring</value>				
 				<value>ru.vrn.com.shared.model.AccessUSB</value>
 				<value>ru.vrn.com.shared.model.AccessMail</value>
 				<value>ru.vrn.com.shared.model.AccessFor1CDetail</value>
@@ -74,6 +73,9 @@
 				<value>ru.vrn.com.shared.model.AccessFileResourses</value>
 				<value>ru.vrn.com.shared.model.AccessFileResoursesDetail</value>
 				<value>ru.vrn.com.shared.model.AccessExchange</value>
+				<value>ru.vrn.com.shared.model.AccessInternet</value>
+				<value>ru.vrn.com.shared.model.AccessVPN</value>
+				<value>ru.vrn.com.shared.model.Accordance</value>				
 			</list>
 		</property>
 		<property name="hibernateProperties">

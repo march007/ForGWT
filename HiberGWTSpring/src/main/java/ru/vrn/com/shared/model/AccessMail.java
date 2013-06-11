@@ -7,10 +7,10 @@ import javax.persistence.Table;
 import ru.vrn.com.shared.model.superclass.Access;
 
 @Entity
-@Table(name = "AccessMail")
+@Table(name = "Access_Mail")
 public class AccessMail extends Access {
 
-	@Column(name = "MAIL_ACCESS", columnDefinition = "VARCHAR", nullable = false)
+	@Column(name = "MAIL_ACCESS", columnDefinition = "VARCHAR(255)", nullable = false)
 	private String mailAccess;
 
 	public String getMailAccess() {

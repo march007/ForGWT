@@ -26,8 +26,11 @@
           <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessFileResoursesDetail.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessFor1C.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessFor1CDetail.class</string>
+          <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessInternet.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessMail.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessUSB.class</string>
+          <string>WEB-INF/classes/ru/vrn/com/shared/model/AccessVPN.class</string>
+          <string>WEB-INF/classes/ru/vrn/com/shared/model/Accordance.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/ListOfBases1C.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/ListOfMonitoring.class</string>
           <string>WEB-INF/classes/ru/vrn/com/shared/model/superclass/Access.class</string>
@@ -104,7 +107,7 @@
               <columnNumber>15</columnNumber>
               <source>
                 <modelId>HiberGWTSpring:HiberGWTSpring:0.0.1-SNAPSHOT</modelId>
-                <location>C:\Users\marchenko\workspace_juno\HiberGWTSpring\pom.xml</location>
+                <location>C:\Users\marchenko\git\DropBoxGit\HiberGWTSpring\pom.xml</location>
               </source>
             </org.apache.maven.model.InputLocation>
           </entry>

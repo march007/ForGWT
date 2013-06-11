@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import ru.vrn.com.shared.model.superclass.Versioned;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "Person")
 public class User extends Versioned {
 
 	@Column(name = "LOGIN", columnDefinition = "VARCHAR(70)", nullable = false)

@@ -2,6 +2,7 @@ package ru.vrn.com.shared.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 import ru.vrn.com.shared.model.superclass.Access;
 
 @Entity
-@Table(name = "AccessFor1C")
+@Table(name = "Access_For_1C")
 // @AttributeOverride(name = "id", column = @Column(name = "ID"))
 public class AccessFor1C extends Access {
 
@@ -17,7 +18,7 @@ public class AccessFor1C extends Access {
 	// @GeneratedValue
 	// private Long id;
 
-	@OneToMany(mappedBy = "accessFor1C", targetEntity = AccessFor1CDetail.class)
+	@OneToMany(mappedBy = "accessFor1C", targetEntity = AccessFor1CDetail.class, cascade = CascadeType.ALL)
 	private Set<AccessFor1CDetail> accessFor1CDetail;
 
 	public Set<AccessFor1CDetail> getAccessFor1CDetail() {
