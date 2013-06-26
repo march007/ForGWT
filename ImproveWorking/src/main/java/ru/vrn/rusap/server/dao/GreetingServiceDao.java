@@ -49,7 +49,7 @@ public class GreetingServiceDao {
 	
 	public UsersAD get(Long id) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
-//		System.out.println("***************************  factory: " + sessionFactory);
+//		System.out.println("***************************  factory: " + sessionFactory);1
 //		System.out.println("***************************   this.hibernateTemplate: " + this.hibernateTemplate);
 		
 		Session session = sessionFactory.openSession();
