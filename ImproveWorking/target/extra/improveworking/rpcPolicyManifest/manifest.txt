@@ -1,3 +1,0 @@
-# Module improveworking
-# RPC service class, partial path of RPC policy file
-ru.vrn.rusap.client.GreetingService, 7D74AE8E7E497903C03B2FD3537A686B.gwt.rpc
