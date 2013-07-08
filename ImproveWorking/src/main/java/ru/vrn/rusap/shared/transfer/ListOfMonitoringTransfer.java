@@ -2,16 +2,16 @@ package ru.vrn.rusap.shared.transfer;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-import ru.vrn.rusap.shared.model.superclass.Modification;
-
+/**
+ * Предназначен для транспортировки на клиенткскую часть  класса баз 1С (ListOfMonitoring).
+ * 
+ * @author marchenko
+ * 
+ * @create 15.06.2013
+ * 
+**/
 public class ListOfMonitoringTransfer implements Serializable {
 	
 	public ListOfMonitoringTransfer() {

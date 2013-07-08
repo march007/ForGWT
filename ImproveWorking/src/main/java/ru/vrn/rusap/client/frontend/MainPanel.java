@@ -29,14 +29,19 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+/*
+	Предназначен для предоставления и изменения информации по IT ресурсам сети.
+	
+	@autor marchenko
+	
+	@create 10.06.2013
 
+*/
 public class MainPanel extends Composite implements HasText {
 
 	private static MainPanelUiBinder uiBinder = GWT
 			.create(MainPanelUiBinder.class);
-	
+
 	@UiField
 	ListBox listBoxUsers;
 	@UiField
@@ -89,14 +94,13 @@ public class MainPanel extends Composite implements HasText {
 	Label labelUserForTextBox;
 	@UiField
 	Label labelPass2;
-	@UiField Button button;
-	@UiField TextArea textArea;
+	@UiField
+	Button button;
+	@UiField
+	TextArea textArea;
 
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
-
-	/* Create Root Logger */
-	// private static Logger rootLogger = Logger.getLogger("");
 
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network "
@@ -107,7 +111,6 @@ public class MainPanel extends Composite implements HasText {
 	final Label textToServerLabel = new Label();
 	final HTML serverResponseLabel = new HTML();
 	VerticalPanel dialogVPanel = new VerticalPanel();
-	// true - change
 	private boolean bool = false;
 	ListOfMonitoring existBase;
 	List<UsersAD> list;
@@ -122,15 +125,12 @@ public class MainPanel extends Composite implements HasText {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		textArea.setReadOnly(true);
-		
+
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
 
-		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
-
 		dialogVPanel.addStyleName("dialogVPanel");
-		// dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
 		dialogVPanel.add(textToServerLabel);
 		dialogVPanel.add(new HTML("<br><b>Ответ сервера:</b>"));
 		dialogVPanel.add(serverResponseLabel);
@@ -144,7 +144,6 @@ public class MainPanel extends Composite implements HasText {
 		button_1.setEnabled(true);
 		button_2.setEnabled(false);
 		button_4.setEnabled(false);
-		
 
 		closeButton.addClickHandler(new ClickHandler() {
 
@@ -154,6 +153,7 @@ public class MainPanel extends Composite implements HasText {
 			}
 		});
 
+		// Получение пользователей Active Directory.		
 		greetingService.getListUsersAD(new AsyncCallback<List<UsersAD>>() {
 
 			@Override
@@ -163,7 +163,8 @@ public class MainPanel extends Composite implements HasText {
 				// "getListUsersAD is Successfull ");
 				list = result;
 				for (UsersAD usersAD : result) {
-					String str = usersAD.getName() + "  :  "+usersAD.getDescription();
+					String str = usersAD.getName() + "  :  "
+							+ usersAD.getDescription();
 					listBox.addItem(str);
 					listBoxUsers.addItem(usersAD.getName());
 				}
@@ -213,6 +214,9 @@ public class MainPanel extends Composite implements HasText {
 	public String getText() {
 		return null;
 	}
+
+	
+	//Получение баз данных 1С.
 	@UiHandler("button_1")
 	void onButton_1Click(ClickEvent event) {
 
@@ -229,8 +233,6 @@ public class MainPanel extends Composite implements HasText {
 					listBox_2.addItem(listOfMonitoring);
 
 				}
-				// bool = false;
-
 			}
 
 			@Override
@@ -249,6 +251,7 @@ public class MainPanel extends Composite implements HasText {
 		button_4.setEnabled(true);
 	}
 
+	
 	@UiHandler("button_2")
 	void onButton_2Click(ClickEvent event) {
 
@@ -285,6 +288,7 @@ public class MainPanel extends Composite implements HasText {
 
 	}
 
+	
 	@UiHandler("buttonSave")
 	void onButtonSaveClick(ClickEvent event) {
 
@@ -341,14 +345,13 @@ public class MainPanel extends Composite implements HasText {
 		} else {
 
 			if (isValidAllFields()) {
-				
+
 				dialogBox.setText("Remote Procedure Call");
 				serverResponseLabel.removeStyleName("serverResponseLabelError");
 				serverResponseLabel.setHTML("everything is allrigths");
 				dialogBox.center();
 				closeButton.setFocus(true);
-				
-				
+
 				ListOfMonitoring baseForMonitoring = new ListOfMonitoring();
 
 				baseForMonitoring.setDomain(textBoxDomain.getText().trim());
@@ -364,7 +367,7 @@ public class MainPanel extends Composite implements HasText {
 						.trim());
 				baseForMonitoring.setRef(textBoxRef.getText().trim());
 				baseForMonitoring.setHostUser(textBoxHostUser.getText().trim());
-				
+
 				greetingService.addBase(baseForMonitoring,
 						new AsyncCallback<Boolean>() {
 
@@ -400,6 +403,18 @@ public class MainPanel extends Composite implements HasText {
 		}
 	}
 
+	
+	/*
+	    Предназнчена для удаления стиля ошибок. 
+	    
+	     Стиль ошибок: 
+	     
+	     <code>
+	     .serverResponseLabelError {
+			  color: red;
+		 }
+		</code>
+	*/
 	private void removeStyleAtLabels() {
 		labelDomain.removeStyleName("serverResponseLabelError");
 		labelPass1.removeStyleName("serverResponseLabelError");
@@ -411,6 +426,12 @@ public class MainPanel extends Composite implements HasText {
 		labelVersions.removeStyleName("serverResponseLabelError");
 	}
 
+	/*
+		Проверка полей ввода на заполненность.
+		
+		@see  ru.vrn.rusap.shared.FieldVerifier
+	
+	*/
 	private boolean isValidAllFields() {
 
 		boolean boo = true;
@@ -512,71 +533,81 @@ public class MainPanel extends Composite implements HasText {
 					}
 				});
 	}
+
+	/*
+		Предназначена для добавления новых сетевых правил. 
 	
+	
+	
+	*/
 	@UiHandler("addNetworksRules")
 	void onAddNetworksRulesClick(ClickEvent event) {
 		String rule = textBoxForUser.getText();
-		
-		if (FieldVerifier.isValidField(rule)){
-			greetingService.addNetworkRule(rule, list.get(listBoxUsers.getSelectedIndex()), new AsyncCallback<Boolean>() {
-				
-				@Override
-				public void onSuccess(Boolean result) {
-					dialogBox.setText("Remote Procedure Call");
-					serverResponseLabel
-							.removeStyleName("serverResponseLabelError");
-					serverResponseLabel
-							.setHTML("Правило добавлено успешно!");
-					dialogBox.center();
-					closeButton.setFocus(true);
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					dialogBox.setText("Remote Procedure Call");
-					serverResponseLabel
-							.removeStyleName("serverResponseLabelError");
-					serverResponseLabel
-							.setHTML("Неудачная попытка свзааться с сервером!");
-					dialogBox.center();
-					closeButton.setFocus(true);
-				}
-			});
-		}else{
+
+		if (FieldVerifier.isValidField(rule)) {
+			greetingService.addNetworkRule(rule,
+					list.get(listBoxUsers.getSelectedIndex()),
+					new AsyncCallback<Boolean>() {
+
+						@Override
+						public void onSuccess(Boolean result) {
+							dialogBox.setText("Remote Procedure Call");
+							serverResponseLabel
+									.removeStyleName("serverResponseLabelError");
+							serverResponseLabel
+									.setHTML("Правило добавлено успешно!");
+							dialogBox.center();
+							closeButton.setFocus(true);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							dialogBox.setText("Remote Procedure Call");
+							serverResponseLabel
+									.removeStyleName("serverResponseLabelError");
+							serverResponseLabel
+									.setHTML("Неудачная попытка свзааться с сервером!");
+							dialogBox.center();
+							closeButton.setFocus(true);
+						}
+					});
+		} else {
 			dialogBox.setText("Remote Procedure Call");
-			serverResponseLabel
-					.removeStyleName("serverResponseLabelError");
-			serverResponseLabel
-					.setHTML("Пустое поле!");
+			serverResponseLabel.removeStyleName("serverResponseLabelError");
+			serverResponseLabel.setHTML("Пустое поле!");
 			dialogBox.center();
 			closeButton.setFocus(true);
 		}
-		
+
 	}
+
 	@UiHandler("button")
 	void onButtonClick(ClickEvent event) {
-		greetingService.getInformationByUser(list.get(listBox.getSelectedIndex()), new AsyncCallback<String>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				dialogBox.setText("Remote Procedure Call");
-				serverResponseLabel
-						.removeStyleName("serverResponseLabelError");
-				serverResponseLabel
-						.setHTML("Неудачная попытка свзааться с сервером!");
-				dialogBox.center();
-				closeButton.setFocus(true);
-			}
-			@Override
-			public void onSuccess(String result) {
-				String[] masString = result.split(";");
-				StringBuilder info = new StringBuilder();
-				
-				for (String string : masString) {
-					info.append(string + "\n");
-				}
-				
-				textArea.setText(info.toString());
-			}
-		});
+		greetingService.getInformationByUser(
+				list.get(listBox.getSelectedIndex()),
+				new AsyncCallback<String>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						dialogBox.setText("Remote Procedure Call");
+						serverResponseLabel
+								.removeStyleName("serverResponseLabelError");
+						serverResponseLabel
+								.setHTML("Неудачная попытка свзааться с сервером!");
+						dialogBox.center();
+						closeButton.setFocus(true);
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						String[] masString = result.split(";");
+						StringBuilder info = new StringBuilder();
+
+						for (String string : masString) {
+							info.append(string + "\n");
+						}
+
+						textArea.setText(info.toString());
+					}
+				});
 	}
 }
