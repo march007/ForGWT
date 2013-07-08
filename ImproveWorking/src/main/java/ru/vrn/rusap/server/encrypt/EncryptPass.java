@@ -4,12 +4,17 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Предназначен для шифрования пароля c солью.
+ * 
+ * @autor marchenko
+ * 
+ * @create 10.06.213
+**/
 public class EncryptPass {
 	private static String SALT = "LongStringForExtraSecurity@#$!%^&*(*)12345678901";
 	
 	public static String encrypt(String pass){
-//	        String unecryptedPassword = "Secret123";
-//	        System.out.println("Unencrypted Password: " + pass);
 	        String unecryptedPassword1 =  pass.substring(2, 4);
 	         
 	        MessageDigest messageDigest=null;
@@ -21,7 +26,6 @@ public class EncryptPass {
 	        }
 	        String encryptedPassword = (new BigInteger(messageDigest.digest())).toString(16);
 	        
-//	        System.out.println("encryptedPassword " + encryptedPassword);
 	        return encryptedPassword;
 	}
 	

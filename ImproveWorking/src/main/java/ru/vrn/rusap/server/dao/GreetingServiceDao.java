@@ -34,405 +34,365 @@ import ru.vrn.rusap.shared.model.UsersAD;
 import ru.vrn.rusap.shared.model.superclass.Versioned;
 import ru.vrn.rusap.shared.transfer.ListOfMonitoringTransfer;
 
+/**
+ * DAO (Data Access Object) слой для серверной стороны RPC сервиса.
+ * 
+ * @author marchenko
+ * 
+ * @create 25.05.2013
+ * 
+ */
 @Repository
 public class GreetingServiceDao {
-	
+
 	@Autowired
 	SessionFactory sessionFactory;
-	
+
 	@Autowired
 	HibernateTemplate hibernateTemplate;
-	
-//	List<AccessFor1CDetail> list1CDetail new ;
+
 	Set<AccessFor1CDetail> for1cDetails = new HashSet<AccessFor1CDetail>();
 	AccessFileResourses accessFileResoursesMain;
-	
+
 	public UsersAD get(Long id) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
-//		System.out.println("***************************  factory: " + sessionFactory);1
-//		System.out.println("***************************   this.hibernateTemplate: " + this.hibernateTemplate);
-		
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		
-		List<UsersAD> list = session.createSQLQuery("SELECT* FROM USERS_AD a where id = 1").addEntity(UsersAD.class).list();
-		
-		session.getTransaction().commit();
-//		System.out.println("*****************  " + list.get(0).getAccount());
-//		System.out.println("*****************  " + list.get(0).getDepartment());
-//		System.out.println("*****************  " + list.get(0).getName());
-		
-		
-		session.beginTransaction();
-		
-		List<UsersAD> list1 = session.createSQLQuery("SELECT * FROM USERS_AD where id = 3").addEntity(UsersAD.class).list();
-		
+
+		List<UsersAD> list1 = session
+				.createSQLQuery("SELECT * FROM USERS_AD where id = 3")
+				.addEntity(UsersAD.class).list();
+
 		session.getTransaction().commit();
 		session.close();
-//		return hibernate.get(UsersAD.class, id);
-		
-//		System.out.println("*************************  " + list1.size());
-//		System.out.println("*************************  " + list1.get(0).getName());
 		return list1.get(0);
-//		return new UsersAD();
 	}
-	
-	
-	public List<UsersAD> getAllUsersAD(){
-		
-//		Timer timer = new Timer(hibernateTemplate);
-//		timer.run();
-		
-		
-		
-//		System.out.println("***************************   this.hibernateTemplate: " + this.hibernateTemplate);
+
+	/**
+	 * Предназначена для получения Всех пользователей Active Directory.
+	 * 
+	 * @return List<UsersAD> - Список пользователей Active Directory
+	 * 
+	 * @see ru.vrn.rusap.shared.model.UsersAD
+	 * 
+	 */
+	public List<UsersAD> getAllUsersAD() {
+
 		final String queryStr = "SELECT * FROM USERS_AD a order by a.NAME";
 		Session session = getCurrentSession();
-		
-//		if (session.isOpen()) System.out.println("OPEN");
-//		if (session.isConnected()) System.out.println("isConnected");
-		
-		
-		List<UsersAD> newlist1 = hibernateTemplate.executeFind(new HibernateCallback() {
-			
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
-				
-				return session.createSQLQuery(queryStr).addEntity(UsersAD.class).list();
-			}
-		});
-		
-//		for (UsersAD usersAD : newlist1) {
-//			System.out.println("usersAD " + usersAD.getAccount() + " name " + usersAD.getName());
-//		}
-		
-//		Query query = getCurrentSession().createQuery(queryStr).addEntity(UsersAD.class).list();;
-//		List<UsersAD> list = (List<UsersAD>)query.list();
-//		
-//		for (UsersAD usersAD : list) {
-//			System.out.println("user AD " + usersAD.getAccount() + "   " + usersAD.getName());
-//		}
-		
-		return newlist1;		
+
+		List<UsersAD> newlist1 = hibernateTemplate
+				.executeFind(new HibernateCallback() {
+
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+
+						return session.createSQLQuery(queryStr)
+								.addEntity(UsersAD.class).list();
+					}
+				});
+
+		return newlist1;
 	}
-	
+
+	/**
+	 * Предназначена для получения текущей сеccии.
+	 * 
+	 * @return Session - Текущая сессия.
+	 * 
+	 * @see org.hibernate.Session
+	 * 
+	 */
 	private Session getCurrentSession() {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
-	
-	public String getInformation(UsersAD user){
-		
-//		System.out.println("wowowowow  " + user.getAccount());
-		
-		StringBuilder builder = new StringBuilder();
-		
-		
-//		builder.
-//		final String queryStr = "SELECT * FROM USERS_AD a order by a.NAME";
-		Session session = getCurrentSession();
-		
-//		String query = "SELECT id FROM ACCESS_EXCHANGE a where a.ID_USER_AD = ";
-				
-//		System.out.println("userAD.id " + user.getId());
-		
-		
-		
-//		List<AccessExchange> listExchange2 = 
-//				this.hibernateTemplate.find("from ACCESS_EXCHANGE a where a.id_user_ad = ?", new Integer(111));
-//
-//		System.out.println("-------------------------listExchange222 " + listExchange2.size() + "  "+ listExchange2);
-//		
-//		
-//		List<AccessExchange> listExchange1 = 
-//				this.hibernateTemplate.find("from ACCESS_EXCHANGE a where a.id_user_ad = ?", 111);
 
-//		System.out.println("-------------------------listExchange111 " + listExchange1.size() + "  "+ listExchange1);
-		
+	/**
+	 * 
+	 * Предназначена для получения информации о доступе к IT ресурсам сети.
+	 * Собирает информацию о доступе к Интернету, о доступе к Usb портам, VPN,
+	 * базам 1с, Exchange.
+	 * 
+	 * @param user
+	 *            - пользователь Active Directory
+	 * 
+	 * @return String - Строка инфоормации о достeпе пользователя Active
+	 *         Directory
+	 * 
+	 * 
+	 */
+	public String getInformation(UsersAD user) {
+
+		StringBuilder builder = new StringBuilder();
+		Session session = getCurrentSession();
+
 		UsersAD userForChek = null;
 		List<UsersAD> listUser = getListUsersADIdByUser(user, session);
-//		for (UsersAD usersAD : listUser) {
-//			System.out.println("users.account " + usersAD.getAccount());
-//			System.out.println("users.name " + usersAD.getName());
-//			System.out.println("users.id " + usersAD.getId());
-//		}
-		
-		if (listUser.size()==1){
-			userForChek =  listUser.get(0);
+
+		if (listUser.size() == 1) {
+			userForChek = listUser.get(0);
 		}
-		
-		
-		System.out.println("userForChek " + userForChek.getAccount());
-		System.out.println("userForChek.name " + userForChek.getName());
-		System.out.println("userForChek.id " + userForChek.getId());
-		
-		System.out.println("-----------------------------------------------------");
-		
-//		AccessExchange exchange = new AccessExchange();
-		
-    String queryStr = "SELECT * FROM ACCESS_EXCHANGE a where a.ID_USER_AD = " + userForChek.getId();	
-	List listExchange = getListExtendsVersioned(userForChek, session, queryStr,  new AccessExchange());	
-	
-	if (listExchange.size()>0){
-		builder.append("Access to Exchange:  yes;");
-	}
-	
-	
-/*	for (Object object : listExchange1) {
-		if (object instanceof AccessExchange){
-			System.out.println("obj  " + ((AccessExchange)object).getHomeAddress().getAccount());
-		}
-	}
-	
-	List<AccessExchange> listExchange = getListExchange(userForChek, session);	
-	
-	
-	String strSimple = "Доступ к exchange:  Есть;";
-	if (listExchange.size()>0){
-		for (AccessExchange accessExchange : listExchange) {
-//			System.out.println("accessExchange  " + accessExchange.getHomeAddress());
-//			builder.append("Доступ к exchange:  Есть;");
+
+		String queryStr = "SELECT * FROM ACCESS_EXCHANGE a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listExchange = getListExtendsVersioned(userForChek, session,
+				queryStr, new AccessExchange());
+
+		if (listExchange.size() > 0) {
 			builder.append("Access to Exchange:  yes;");
 		}
-				
-	}*/
-	System.gc();
-	
-	queryStr = "SELECT * FROM ACCESS_INTERNET a where a.ID_USER_AD = " + userForChek.getId();
-	List listInternet = getListExtendsVersioned(userForChek, session, queryStr,  new AccessInternet());	
-	
-//	List<AccessInternet> listInternet = getListInternet(userForChek,  session);	
-	
-	if (listInternet.size()>0){
+		System.gc();
+
+		queryStr = "SELECT * FROM ACCESS_INTERNET a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listInternet = getListExtendsVersioned(userForChek, session,
+				queryStr, new AccessInternet());
+
+		if (listInternet.size() > 0) {
 			builder.append("Access to Internet:  yes;");
-				
-	}
-	System.gc();
-		
-	queryStr = "SELECT * FROM ACCESS_MAIL a where a.ID_USER_AD = " + userForChek.getId();
-	List listMail = getListExtendsVersioned(userForChek, session, queryStr,  new AccessMail());	
-	
-//	List<AccessMail> listMail = getListMail(userForChek,  session);
-	
-	if (listMail.size()>0){
-		
-		for (Object object : listMail) {
-			if (object instanceof AccessMail){
-				builder.append("Mail:  "+((AccessMail)object).getMailAccess() +";");
+
+		}
+		System.gc();
+
+		queryStr = "SELECT * FROM ACCESS_MAIL a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listMail = getListExtendsVersioned(userForChek, session, queryStr,
+				new AccessMail());
+
+		if (listMail.size() > 0) {
+
+			for (Object object : listMail) {
+				if (object instanceof AccessMail) {
+					builder.append("Mail:  "
+							+ ((AccessMail) object).getMailAccess() + ";");
+				}
 			}
 		}
-	/*	for (AccessMail accessMail : listMail) {
-			System.out.println("accessMail  " + accessMail.getHomeAddress());
-//			builder.append("Почта:  "+accessMail.getMailAccess() +";");
-			builder.append("Mail:  "+accessMail.getMailAccess() +";");
-		}*/
-				
-	}
-	System.gc();
-	
-	 queryStr = "SELECT * FROM ACCESS_USB a where a.ID_USER_AD = " + userForChek.getId();	
-	List listUsb = getListExtendsVersioned(userForChek, session, queryStr,  new AccessUSB());	
-	
-//	List<AccessUSB> listUsb = getListUsb(userForChek,  session);
-	
-	if (listUsb.size()>0){
-//		for (AccessUSB accessUSB : listUsb) {
-//			System.out.println("accessUSB  " + accessUSB.getHomeAddress());
-//			builder.append("Доступ к USB: Есть;");
-			builder.append("Access to USB: yes;");	
-//		}
-			
-	}
-	System.gc();
-	
-	queryStr = "SELECT * FROM ACCORDANCE a where a.ID_USER_AD = " + userForChek.getId();
-	List listAccordance = getListExtendsVersioned(userForChek, session, queryStr,  new Accordance());	
-//	List<Accordance> listAccordance = getListAccordance(userForChek,  session);
-	
-	if (listAccordance.size()>0){
-		for (Object object : listAccordance) {
-			if (object instanceof Accordance){
-				Accordance accordance = (Accordance)object;
-				System.out.println("accordance  " + accordance.getHomeAddress());
-				builder.append("Computer: "+accordance.getComputer()+";");
+		System.gc();
+
+		queryStr = "SELECT * FROM ACCESS_USB a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listUsb = getListExtendsVersioned(userForChek, session, queryStr,
+				new AccessUSB());
+
+		if (listUsb.size() > 0) {
+			builder.append("Access to USB: yes;");
+
+		}
+		System.gc();
+
+		queryStr = "SELECT * FROM ACCORDANCE a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listAccordance = getListExtendsVersioned(userForChek, session,
+				queryStr, new Accordance());
+
+		if (listAccordance.size() > 0) {
+			for (Object object : listAccordance) {
+				if (object instanceof Accordance) {
+					Accordance accordance = (Accordance) object;
+					builder.append("Computer: " + accordance.getComputer()
+							+ ";");
+				}
 			}
 		}
-		
-		
-		
-/*		for (Accordance accordance : listAccordance) {
-			System.out.println("accordance  " + accordance.getHomeAddress());
-//			builder.append("Соответствие компьютера и пользователя: "+accordance.getComputer()+";");
-			builder.append("Computer: "+accordance.getComputer()+";");
-		}*/
-				
-	}
-	System.gc();
-	
-	queryStr = "SELECT * FROM ACCESS_VPN a where a.ID_USER_AD = " + userForChek.getId();
-	
-	List listVPN = getListExtendsVersioned(userForChek, session, queryStr,  new AccessVPN());
-	
-//	List<AccessVPN> listVPN = getListVPN(userForChek,  session);
-	
-	if (listVPN.size()>0){
-//		for (AccessVPN accessVPN : listVPN) {
-//			System.out.println("accessVPN  " + accessVPN.getHomeAddress());
-//			builder.append("Доступ к  VPN: Есть;");
+		System.gc();
+
+		queryStr = "SELECT * FROM ACCESS_VPN a where a.ID_USER_AD = "
+				+ userForChek.getId();
+
+		List listVPN = getListExtendsVersioned(userForChek, session, queryStr,
+				new AccessVPN());
+
+		if (listVPN.size() > 0) {
 			builder.append("Access to VPN: yes;");
-//		}
-	}
-	System.gc();
-	
-	queryStr = "SELECT * FROM ACCESS_FILE_RESOURSES a where a.ID_USER_AD = " + userForChek.getId();
-	List listAccessFileResource = getListExtendsVersioned(userForChek, session, queryStr,  new AccessFileResourses());
-	
-	if (listAccessFileResource.size()>0){
-		for (Object object : listAccessFileResource) {
-			if (object instanceof AccessFileResourses){
-				Set<AccessFileResoursesDetail> set  = ((AccessFileResourses)object).getAccessFileResoursesDetailItems();
-				for (AccessFileResoursesDetail accessFileResoursesDetails : set) {
-					System.out.println("accessFor1CDetail  " + accessFileResoursesDetails.getPath());
-					String str = accessFileResoursesDetails.getPath();
-					
-//					builder.append("Доступ к базе: "+str+";");
-					builder.append("Access to Folder "+str+" : yes;");
+		}
+		System.gc();
+
+		queryStr = "SELECT * FROM ACCESS_FILE_RESOURSES a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listAccessFileResource = getListExtendsVersioned(userForChek,
+				session, queryStr, new AccessFileResourses());
+
+		if (listAccessFileResource.size() > 0) {
+			for (Object object : listAccessFileResource) {
+				if (object instanceof AccessFileResourses) {
+					Set<AccessFileResoursesDetail> set = ((AccessFileResourses) object)
+							.getAccessFileResoursesDetailItems();
+					for (AccessFileResoursesDetail accessFileResoursesDetails : set) {
+						String str = accessFileResoursesDetails.getPath();
+
+						builder.append("Access to Folder " + str + " : yes;");
+					}
 				}
 			}
 		}
-	}
-		
-	
-	queryStr = "SELECT * FROM ACCESS_FOR_1C a where a.ID_USER_AD = " + userForChek.getId();
-	List listAccess1C = getListExtendsVersioned(userForChek, session, queryStr,  new AccessFor1C());
-	
-//	List<AccessFor1C> listAccess1C = getListAccess1C(userForChek,  session);
-	
-	if (listAccess1C.size()>0){
-		for (Object object : listAccess1C) {
-			if (object instanceof AccessFor1C){
-				Set<AccessFor1CDetail> set  = ((AccessFor1C)object).getAccessFor1CDetail();
-				for (AccessFor1CDetail accessFor1CDetail : set) {
-					System.out.println("accessFor1CDetail  " + accessFor1CDetail.getListOfMonitoring().getRef());
-					String str = accessFor1CDetail.getListOfMonitoring().getRef();
-					
-//					builder.append("Доступ к базе: "+str+";");
-					builder.append("Access to database "+str+" : yes;");
+
+		queryStr = "SELECT * FROM ACCESS_FOR_1C a where a.ID_USER_AD = "
+				+ userForChek.getId();
+		List listAccess1C = getListExtendsVersioned(userForChek, session,
+				queryStr, new AccessFor1C());
+
+		if (listAccess1C.size() > 0) {
+			for (Object object : listAccess1C) {
+				if (object instanceof AccessFor1C) {
+					Set<AccessFor1CDetail> set = ((AccessFor1C) object)
+							.getAccessFor1CDetail();
+					for (AccessFor1CDetail accessFor1CDetail : set) {
+						String str = accessFor1CDetail.getListOfMonitoring()
+								.getRef();
+
+						builder.append("Access to database " + str + " : yes;");
+					}
 				}
 			}
+
 		}
-		
-	}
-	System.gc();
-	System.out.println("*********************************************");
-	System.out.println(builder.toString());
-	System.out.println("*********************************************");
-	
-	
+		System.gc();
+
 		return builder.toString();
 	}
 
-	private List<UsersAD> getListUsersADIdByUser(final UsersAD user, Session session) {
-		List<UsersAD> listUsersAD = (List<UsersAD>) hibernateTemplate.execute(new HibernateCallback() {
-			
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
-				
-				Criteria criteria = session.createCriteria(UsersAD.class);
-				criteria.add(Restrictions.eq("account", user.getAccount()));
-				return criteria.list();
-			}
-		});
+	private List<UsersAD> getListUsersADIdByUser(final UsersAD user,
+			Session session) {
+		List<UsersAD> listUsersAD = (List<UsersAD>) hibernateTemplate
+				.execute(new HibernateCallback() {
+
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+
+						Criteria criteria = session
+								.createCriteria(UsersAD.class);
+						criteria.add(Restrictions.eq("account",
+								user.getAccount()));
+						return criteria.list();
+					}
+				});
 		return listUsersAD;
 	}
-	
-	private <T  extends Versioned> List<? extends Versioned> getListExtendsVersioned
-			(final UsersAD user, Session session, final String query, final T className) {
-		
+
+	private <T extends Versioned> List<? extends Versioned> getListExtendsVersioned(
+			final UsersAD user, Session session, final String query,
+			final T className) {
+
 		return hibernateTemplate.executeFind(new HibernateCallback() {
-			
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
-				
-				return session.createSQLQuery(query).addEntity(className.getClass()).list();
+
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+
+				return session.createSQLQuery(query)
+						.addEntity(className.getClass()).list();
 			}
 		});
 	}
 
-
+	/**
+	 * Предназначена для получения баз 1С в виде строки.
+	 * 
+	 * @return List<String> - Список баз 1С, собранных в строку для удобства.
+	 *         Строка представляет собой соединения из данных о сревере и
+	 *         строкой подключения (ref).
+	 * 
+	 */
 	public List<String> getDbs() {
 		List<String> listDbs = new ArrayList<String>();
 		for (ListOfMonitoring listOfMonitoring : getListDbs(getCurrentSession())) {
-//			System.out.println("listOfMonitoring ------------------ " + listOfMonitoring.toString());
-			listDbs.add(listOfMonitoring.getSrv() + " ; " + listOfMonitoring.getRef());
-		} 
+			listDbs.add(listOfMonitoring.getSrv() + " ; "
+					+ listOfMonitoring.getRef());
+		}
 		return listDbs;
 	}
-	
+
+	/**
+	 * Предназначена для получения баз 1С.
+	 * 
+	 * @return List<ListOfMonitoring> - Список баз 1С.
+	 * 
+	 * @see ru.vrn.rusap.shared.model.ListOfMonitoring
+	 * 
+	 **/
 	private List<ListOfMonitoring> getListDbs(Session session) {
-		List<ListOfMonitoring> listDbs = (List<ListOfMonitoring>) hibernateTemplate.execute(new HibernateCallback() {
-			
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
-				
-				Criteria criteria = session.createCriteria(ListOfMonitoring.class);
-//				criteria.add(Restrictions.eq("account", user.getAccount()));
-				return criteria.list();
+		List<ListOfMonitoring> listDbs = (List<ListOfMonitoring>) hibernateTemplate
+				.execute(new HibernateCallback() {
+
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+
+						Criteria criteria = session
+								.createCriteria(ListOfMonitoring.class);
+						return criteria.list();
+					}
+				});
+		return listDbs;
+	}
+
+	/**
+	 * Предназначена для получения списка от класса Versioned.
+	 * 
+	 * @param user
+	 *            - пользователь Active Directory.
+	 * @param session
+	 *            - сессия хибернета.
+	 * @param query
+	 *            - запрос к базе данных.
+	 * @param T
+	 *            className - класс для соответствия запроса классу. Класс T от
+	 *            Versioned.
+	 * 
+	 * @return List<? extends Versioned> - Список полученных из базы данных,
+	 *         приведенных в соответстиве хибернетом с классом в коде, который
+	 *         расширяет класс Versioned. То есть вместо WildCard может стоять
+	 *         любой класс, который расширяет класс Versioned.
+	 * 
+	 * @see ru.vrn.rusap.shared.model.superclass.Versioned
+	 * 
+	 **/
+	private <T extends Versioned> List<? extends Versioned> getListExtendsVersionedWithLazyInit(
+			final UsersAD user, Session session, final String query,
+			final T className) {
+
+		return hibernateTemplate.executeFind(new HibernateCallback() {
+
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+
+				List lis = session.createSQLQuery(query)
+						.addEntity(className.getClass()).list();
+				Set<AccessFor1CDetail> details = ((ListOfMonitoring) lis.get(0))
+						.getAccessFor1CDetail();
+				hibernateTemplate.initialize(details);
+				for1cDetails.addAll(details);
+				return lis;
 			}
 		});
-		return listDbs;
 	}
 
-	
-	private <T  extends Versioned> List<? extends Versioned> getListExtendsVersionedWithLazyInit
-	(final UsersAD user, Session session, final String query, final T className) {
-
-	return hibernateTemplate.executeFind(new HibernateCallback() {
-		
-		public Object doInHibernate(Session session) throws HibernateException,
-				SQLException {
-			
-			List lis = session.createSQLQuery(query).addEntity(className.getClass()).list();
-			Set<AccessFor1CDetail> details = ((ListOfMonitoring)lis.get(0)).getAccessFor1CDetail();
-			hibernateTemplate.initialize(details);
-			for1cDetails.addAll(details);
-//			for (AccessFor1CDetail accessFor1CDetail : details) {
-//				System.out.println("accessFor1CDetail    888 " + accessFor1CDetail.getAccessFor1C().getHomeAddress().getAccount());;
-//				for1cDetails.add(accessFor1CDetail);
-//			}
-			return lis;
-		}
-		});
-	}
-	
-
-	public ListOfMonitoringTransfer getBaseByString(String string) {
+	/**
+	 * Предназначена для получения класса ListOfMonitoringTransfer, для передачи
+	 * на клиентскую часть.
+	 * 
+	 * @param baseName
+	 *            - имя базы 1С, стостоящей из строки сервера и строки
+	 *            подключения (ref).
+	 * 
+	 * @return ListOfMonitoringTransfer - Временный класс, дял передачи на
+	 *         клиенткусю часть, в точности повторяющий ListOfMonitoring.
+	 * 
+	 * @see ru.vrn.rusap.shared.transfer.ListOfMonitoringTransfer.
+	 * 
+	 **/
+	public ListOfMonitoringTransfer getBaseByString(String baseName) {
 		for1cDetails.clear();
-		String[] strings = string.split(";");
-		String query = "SELECT * FROM LIST_OF_MONITORING a where a.SERVER ='"+strings[0].trim()+"'and a.REF ='"+strings[1].trim()+"'";
-		
-		System.out.println("query  --- " + query );
-		List list = getListExtendsVersionedWithLazyInit(new UsersAD(), getCurrentSession(), query, new ListOfMonitoring());
-		
-//		for (AccessFor1CDetail accessFor1CDetail : for1cDetails) {
-//			System.out.println("accessFor1CDetail    101010 " + accessFor1CDetail.getAccessFor1C().getHomeAddress().getAccount());;
-//		}
-//		List<ListOfMonitoring> lis1 = getListDbs(getCurrentSession());
-		
-//		System.out.println("lis1 " + lis1.size());
-//for (ListOfMonitoring ob : lis1) {
-//	System.out.println("ob eee " + ob.getSrv()+"  " + ob.getRef());
-//	if ((ob.getSrv().equals(strings[0].trim()))&&(ob.getRef().equals(strings[1].trim()))){
-//		System.out.println("ob.ob() " + ob);
-//		return ob;
-//	}
-//}
-		
-//		Set<AccessFor1CDetail> set = new HashSet<AccessFor1CDetail>();
-ListOfMonitoringTransfer mon = new ListOfMonitoringTransfer();
-		
-//		for (Object object : list) {
-		ListOfMonitoring monTemp  = ((ListOfMonitoring)list.get(0));
-		
+		String[] strings = baseName.split(";");
+		String query = "SELECT * FROM LIST_OF_MONITORING a where a.SERVER ='"
+				+ strings[0].trim() + "'and a.REF ='" + strings[1].trim() + "'";
+
+		System.out.println("query  --- " + query);
+		List list = getListExtendsVersionedWithLazyInit(new UsersAD(),
+				getCurrentSession(), query, new ListOfMonitoring());
+
+		ListOfMonitoringTransfer mon = new ListOfMonitoringTransfer();
+		ListOfMonitoring monTemp = ((ListOfMonitoring) list.get(0));
+
 		mon.setId(monTemp.getId());
 		mon.setDateLastMofification(monTemp.getDateLastMofification());
 		mon.setDomain(monTemp.getDomain());
@@ -446,43 +406,26 @@ ListOfMonitoringTransfer mon = new ListOfMonitoringTransfer();
 		mon.setSrv(monTemp.getSrv());
 		mon.setUser(monTemp.getUser());
 		mon.setVersion(monTemp.getVersion());
-		
-//			System.out.println(" object eeeeeeeeee " + mon.getRef());
-//			System.out.println(" object eeeeeeeeee 1 " + mon.getAccessFor1CDetail().size());
-//			System.out.println(" object eeeeeeeeee 2 " + mon.getAccessFor1CDetail());
-			
-//			+"  " + mon.getAccessFor1CDetail().size()+ "   "+  mon.getAccessFor1CDetail());
-			
-//			for (AccessFor1CDetail acc : mon.getAccessFor1CDetail()) {
-//				System.out.println("acc  " + acc.getAccessFor1C().getHomeAddress().getAccount());
-//				
-//				
-//				AccessFor1CDetail detail = new AccessFor1CDetail();
-//				
-//				detail.setAccessFor1C(acc.getAccessFor1C());
-//				detail.setId(acc.getId());
-//				detail.setListOfMonitoring(acc.getListOfMonitoring());
-//				
-//				set.add(detail);
-//			}
-			
-//			mon.setAccessFor1CDetail(set);
-			
-//		}
-			
-//			mon.setAccessFor1CDetail(for1cDetails);
-		
-//		ListOfMonitoring monitoring = (ListOfMonitoring)list.get(0);
-		
-		System.out.println("GreetingServiceDao.getBaseByString() " + mon);
+
 		return mon;
 	}
 
-
+	/**
+	 * Предназначена для изменения данных существующей базы 1С.
+	 * 
+	 * @param base
+	 *            - Временный класс, дял передачи на клиенткусю часть, в
+	 *            точности повторяющий ListOfMonitoring.
+	 * 
+	 * @return boolean - результат корректности изменения существующей базы 1С.
+	 * 
+	 * @see ru.vrn.rusap.shared.transfer.ListOfMonitoringTransfer.
+	 * 
+	 **/
 	public boolean changeExistDatabase(ListOfMonitoringTransfer base) {
-		
+
 		ListOfMonitoring monitoring = new ListOfMonitoring();
-		
+
 		monitoring.setDateLastMofification(base.getDateLastMofification());
 		monitoring.setDomain(base.getDomain());
 		monitoring.setHost(base.getHost());
@@ -496,225 +439,207 @@ ListOfMonitoringTransfer mon = new ListOfMonitoringTransfer();
 		monitoring.setSrv(base.getSrv());
 		monitoring.setUser(base.getUser());
 		monitoring.setVersion(base.getVersion());
-		
-		System.out.println("base changeExistDatabase" + base);
-		try{
-			
+
+		try {
+
 			hibernateTemplate.update(monitoring);
-//			saveChangingBase(monitoring, true);
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			e.printStackTrace();
 			return false;
 		}
-			return true;
+		return true;
 	}
 
+	/**
+	 * Предназначена для сохранения или обновления базы 1С.
+	 * 
+	 * @param base
+	 *            - Временный класс, для передачи на клиенткусю часть, в
+	 *            точности повторяющий ListOfMonitoring.
+	 * 
+	 * @param bool
+	 *            - результат корректности изменения существующей базы 1С.
+	 * 
+	 * @see ru.vrn.rusap.shared.transfer.ListOfMonitoringTransfer.
+	 * 
+	 **/
+	private void saveChangingBase(final ListOfMonitoring base,
+			final boolean bool) {
 
-	private void saveChangingBase(final ListOfMonitoring base, final boolean bool) {
-		
 		this.hibernateTemplate.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
-				
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+
 				org.hibernate.Transaction tx = session.beginTransaction();
-                
-                tx.begin();
-                if (bool){
-                	session.update(base);
-                }else{
-                	session.save(base);
-                }
-                tx.commit();
-                session.close();
-                return null;
+
+				tx.begin();
+				if (bool) {
+					session.update(base);
+				} else {
+					session.save(base);
+				}
+				tx.commit();
+				session.close();
+				return null;
 			}
 		});
 	}
 
-
+	/**
+	 * Предназначена для сохранения новой базы 1С.
+	 * 
+	 * @param base
+	 *            - класс с данными о базе 1С.
+	 * 
+	 * @return boolean - результат корректности добавления базы 1С.
+	 * 
+	 * 
+	 **/
 	public boolean addNewDatabase(ListOfMonitoring base) {
-		
+
 		base.setDateLastMofification(new Timestamp(System.currentTimeMillis()));
-		
-		System.out.println("base addNewDatabase" + base);
-		
-		/*ListOfMonitoring base = new ListOfMonitoring();		
-		base.setSqlActive(true);
-		
-		String[] masStrings = string.split("|");
-		
-		for (String it : masStrings) {
-			String[] masStringsTemporary = it.split("=");
-			
-			String fisrtStr = masStringsTemporary[0].trim();
-			String secondStr = masStringsTemporary[1].trim();
-			
-				if (fisrtStr.equals("server")){
-					base.setSrv(secondStr);
-				}else if (fisrtStr.equals("ref")){
-					base.setRef(secondStr);
-				}else if (fisrtStr.equals("domain")){
-					base.setDomain(secondStr);
-				}else if (fisrtStr.equals("version")){
-					base.setVersion(secondStr);
-				}else if (fisrtStr.equals("host")){
-					base.setHost(secondStr);
-				}else if (fisrtStr.equals("host_user")){
-					base.setHostUser(secondStr);
-				}else if (fisrtStr.equals("host_password")){
-					base.setHostPassword(secondStr);
-				}else if (fisrtStr.equals("programm_user")){
-					base.setUser(secondStr);
-				}else if (fisrtStr.equals("programm_password")){
-					base.setProgram1cPassword(secondStr);
-				}
-		}*/
-		
-//		boolean bool = true;
-//		  Properties configuration = new Properties();
-//	        
-//	        configuration.setProperty(OCE_CFG_DRIVER, base.getVersion());
-//	        configuration.setProperty(OCE_CFG_HOST, base.getHost());
-//	        configuration.setProperty(OCE_CFG_HOST_USER, base.getUser());
-//	        configuration.setProperty(OCE_CFG_HOST_PASSWORD,base.getHostPassword());
-//	        configuration.setProperty(OCE_CFG_DOMAIN, base.getDomain());
-////	        configuration.setProperty(OCE_CFG_1CDB_PATH, "I:\\Base8\\DCOM");
-//	        configuration.setProperty(OCE_CFG_1CDB_USER, base.getHostUser());
-//	        configuration.setProperty(OCE_CFG_1CDB_PASSWORD, base.getProgram1cPassword());
-//	        configuration.setProperty(OCE_CFG_1CSRVR, base.getSrv());
-//	        configuration.setProperty(OCE_CFG_1CREF, base.getRef());
-//	        configuration.setProperty(OCE_CFG, "UPP_13_Vector");	
-	        
-//	        ApplicationDriver driver = ApplicationDriver.loadDriver((String) configuration.get( PropertiesReader.OCE_CFG_DRIVER ) );
-//	        driver.setAutoRegistration(true); // только для самого первого подключения
-//	        OCApp app = OCApp.getNewInstance();
-	        
-	        
-//	        app.setApplicationDriver(driver);
-//	        try{
-//						app.connect(configuration);
-//				
-//	                System.out.println("Connected to " + app.getComputerName());
-//	        } catch (JIException e) {
-//				e.printStackTrace();
-//				bool = false;
-//			} catch (IOException e) {
-//				bool = false;
-//				e.printStackTrace();
-//			}
-		
-		try{
-			
-//			if (bool)
-				hibernateTemplate.save(base);
-			
-		}catch(HibernateException e){
+
+		try {
+			hibernateTemplate.save(base);
+		} catch (HibernateException e) {
 			e.printStackTrace();
 			return false;
 		}
-			return true;
+		return true;
 	}
 
-
+	/**
+	 * Предназначена для сохранения сетевых правил для данного пользователя.
+	 * 
+	 * @param rule
+	 *            - строка сетевого правила. Для примера это может быть :
+	 *            \\Rusap\Vestnik\Vestnik
+	 * 
+	 * @param usersAD
+	 *            - пользователь Active Directory.
+	 * 
+	 * @return boolean - результат корректности добавления сетевых правил.
+	 * 
+	 * 
+	 **/
 	public boolean addNetworkRules(String rule, UsersAD usersAD) {
-		
-		System.out.println("rule " + rule);
-		System.out.println("usersAD " + usersAD.getAccount() + "  " + usersAD.getId());
-		
-		UsersAD rightUserAd = getListUsersADIdByUser(usersAD, getCurrentSession()).get(0);
-		System.out.println("rightUserAd " + rightUserAd.getAccount() + " " + usersAD.getId());
-		
+
+		UsersAD rightUserAd = getListUsersADIdByUser(usersAD,
+				getCurrentSession()).get(0);
+		System.out.println("rightUserAd " + rightUserAd.getAccount() + " "
+				+ usersAD.getId());
+
 		AccessFileResourses accessFileResourses = null;
-		if(accessFileResoursesMain == null){
-			
-//		Set<AccessFileResoursesDetail> set = new HashSet<AccessFileResoursesDetail>();
-//		set.add(accessFileResoursesDetailItems);
-		
-		accessFileResourses = new AccessFileResourses();
-		accessFileResourses.setDateLastMofification(new Timestamp(System.currentTimeMillis()));
-		accessFileResourses.setHomeAddress(rightUserAd);
-//		accessFileResourses.setAccessFileResoursesDetailItems(set);
-		
-		accessFileResoursesMain = accessFileResourses;
-		
-		}else{
-			if (accessFileResoursesMain.getHomeAddress().getAccount().equals(usersAD.getAccount())){
+		if (accessFileResoursesMain == null) {
+
+			accessFileResourses = new AccessFileResourses();
+			accessFileResourses.setDateLastMofification(new Timestamp(System
+					.currentTimeMillis()));
+			accessFileResourses.setHomeAddress(rightUserAd);
+
+			accessFileResoursesMain = accessFileResourses;
+
+		} else {
+			if (accessFileResoursesMain.getHomeAddress().getAccount()
+					.equals(usersAD.getAccount())) {
 				System.out.println("true");
-//				accessFileResourses = accessFileResoursesMain;
+				// accessFileResourses = accessFileResoursesMain;
 				accessFileResourses = new AccessFileResourses();
-				accessFileResourses.setDateLastMofification(new Timestamp(System.currentTimeMillis()));
+				accessFileResourses.setDateLastMofification(new Timestamp(
+						System.currentTimeMillis()));
 				accessFileResourses.setHomeAddress(rightUserAd);
-			}else{
+			} else {
 				System.out.println("false");
 				accessFileResourses = new AccessFileResourses();
-				accessFileResourses.setDateLastMofification(new Timestamp(System.currentTimeMillis()));
+				accessFileResourses.setDateLastMofification(new Timestamp(
+						System.currentTimeMillis()));
 				accessFileResourses.setHomeAddress(rightUserAd);
-				
+
 				accessFileResoursesMain = accessFileResourses;
 			}
-			
+
 		}
-		
+
 		AccessFileResoursesDetail accessFileResoursesDetailItems = new AccessFileResoursesDetail();
 		accessFileResoursesDetailItems.setPath(rule);
 		accessFileResoursesDetailItems.setDictionary(accessFileResourses);
-		
-		try{
-		hibernateTemplate.saveOrUpdate(accessFileResourses);
-		hibernateTemplate.saveOrUpdate(accessFileResoursesDetailItems);
-		
-//			saveNewNetworkRule(accessFileResourses);
-		}catch(HibernateException e){
+
+		try {
+			hibernateTemplate.saveOrUpdate(accessFileResourses);
+			hibernateTemplate.saveOrUpdate(accessFileResoursesDetailItems);
+
+		} catch (HibernateException e) {
 			e.printStackTrace();
 			return false;
 		}
-			return true;
+		return true;
 	}
 
-
-	private void saveNewNetworkRule(final AccessFileResourses accessFileResourses){
+	/**
+	 * Предназначена для сохранения новых сетевых правил в виде сформированного
+	 * класса модели базы данных.
+	 * 
+	 * @param accessFileResourses
+	 *            - класс модели базы данных, содержащий информацию о сетевых
+	 *            ресурсах определенного пользователя.
+	 * 
+	 * @see ru.vrn.rusap.shared.model.AccessFileResourses
+	 **/
+	private void saveNewNetworkRule(
+			final AccessFileResourses accessFileResourses) {
 		this.hibernateTemplate.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
 				org.hibernate.Transaction tx = session.beginTransaction();
-                tx.begin();
-                session.save(accessFileResourses);
-                tx.commit();                
-                session.close();
-                return null;
+				tx.begin();
+				session.save(accessFileResourses);
+				tx.commit();
+				session.close();
+				return null;
 			}
 		});
 	}
 
-
+	/**
+	 * Предназначена дял проверки пользователя при авторизации.
+	 * 
+	 * @param person
+	 *            - класс модели базы данных, предназначенный для хранения
+	 *            информации о пользователях системы мониторинга.
+	 * 
+	 * @return boolean - результат проверки пользователя при авторизации.
+	 * 
+	 **/
 	public boolean checkUserForAutorization(User person) {
-		
+
 		final String use = EncryptPass.encrypt(person.getPassword());
-		List<User> list = (List<User>) hibernateTemplate.execute(new HibernateCallback() {
-			
-			@Override
-			public Object doInHibernate(Session session) throws HibernateException,
-					SQLException {
-				
-				Criteria criteria = session.createCriteria(User.class);
-				return criteria.list();
-			}
-		});
-		
-		System.out.println("list " + list.get(0).getLogin() + " " + list.get(0).getMail());
-		
-		if ((list.size()!=0)||(list !=null)){
-			
+		List<User> list = (List<User>) hibernateTemplate
+				.execute(new HibernateCallback() {
+
+					@Override
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+
+						Criteria criteria = session.createCriteria(User.class);
+						return criteria.list();
+					}
+				});
+
+		System.out.println("list " + list.get(0).getLogin() + " "
+				+ list.get(0).getMail());
+
+		if ((list.size() != 0) || (list != null)) {
+
 			for (User user : list) {
-				if (user.getPassword().equals(use)){
+				if (user.getPassword().equals(use)) {
 					return true;
 				}
 			}
-				return false;
-			
-		}else{
+			return false;
+
+		} else {
 			return false;
 		}
 	}
-		
+
 }
