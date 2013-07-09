@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  * @create 10.06.213
 **/
 public class EncryptPass {
-	private static String SALT = "LongStringForExtraSecurity@#$!%^&*(*)12345678901";
+	private static String SALT = "****************************";
 	
 	public static String encrypt(String pass){
 	        String unecryptedPassword1 =  pass.substring(2, 4);
