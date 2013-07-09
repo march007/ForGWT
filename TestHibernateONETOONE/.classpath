@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="main/java/|main/resources/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="test/main/java"/>
+	<classpathentry kind="src" path="test/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Sun JDK 1.6.0_13"/>
+	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.hibernate.MYECLIPSE_HIBERNATE3_3_EM"/>
+	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.hibernate.MYECLIPSE_HIBERNATE3_3_CORE"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-3.1.1-runtime.jar"/>
+	<classpathentry kind="lib" path="lib/jaybird-full-2.2.0.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/commons-logging.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/jcifs-1.2.19.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/j-interop.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/j-interopdeps.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/junit.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/lib_053/oce-core-0.5.3-iridium.jar"/>
+	<classpathentry kind="lib" path="D:/my/libs for 1C/lib_053/oce-jdbc-0.5.3.jar"/>
+	<classpathentry kind="lib" path="D:/my/java/Microsoft JDBC Driver 4.0 for SQL Server/sqljdbc_4.0/enu/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="D:/my/java/mysql-connector-java-5.0.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
