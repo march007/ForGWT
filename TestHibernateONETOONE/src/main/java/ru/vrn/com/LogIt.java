@@ -16,7 +16,7 @@ import java.util.logging.SimpleFormatter;
 */
 public class LogIt {
 	private static final String logForLinux = "/home/base/log.properties";
-	private static final String logForWindows = "D:/log111111.properties";
+	private static final String logForWindows = "D:/log.properties";
 	private static String PATH;
 	private static Logger logger1 = Logger.getLogger(LogIt.class.getName());
 
