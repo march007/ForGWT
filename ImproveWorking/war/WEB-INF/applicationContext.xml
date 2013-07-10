@@ -52,8 +52,8 @@
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.firebirdsql.jdbc.FBDriver" />
 		<property name="url" value="jdbc:firebirdsql://localhost:3050/D:\dbs\MONITORINGDB.FDB" />
-		<property name="username" value="sysdba" />
-		<property name="password" value="masterkey" />
+		<property name="username" value="********" />
+		<property name="password" value="********" />
 	</bean>
 	
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -146,73 +146,12 @@
 	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
   <property name="dataSource" ref="dataSource"/>
   </bean>  -->
-<!-- 		<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="ru.vrn.com.shared.model" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.id.new_generator_mappings">true</prop>
-			</props>
-		</property>
-	</bean> -->
-	
-<!-- 	jdbc.driverClassName=org.firebirdsql.jdbc.FBDriver
-jdbc.url=jdbc:firebirdsql://localhost:3050/D:\dbs\MONITORINGDB.FDB
-jdbc.username=sysdba
-jdbc.password=masterkey
-
-hibernate.dialect=org.hibernate.dialect.SQLServer2008Dialect
-hibernate.hbm2ddl=update
-hibernate.show_sql=true
-
-pool.max_active=100
-pool.max_idle=30
-pool.max_wait=-1 -->
-	
-	<!-- <bean id="databaseProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-	<property name="ignoreUnresolvablePlaceholders" value="true"/>
-		<property name="location">
-			<value>classpath:properties/database.properties</value>
-		</property>
-	</bean>
-	 -->
-	
-<!-- 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="ru.vrn.com.shared.model" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.id.new_generator_mappings">true</prop>
-			</props>
-		</property>
-	</bean>
-	 -->
-	
-	
-
-	
-	
-	
+  
 	    <!-- switches on the transactional behavior-->
 <!--   <tx:annotation-driven />
  <tx:annotation-driven transaction-manager="transactionManager" />	
 	
-  a PlatformTransactionManager is still required
-  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-  (this dependency is defined somewhere else)
-  <property name="dataSource" ref="dataSource"/>
-  </bean> -->
-	
+ 
 	
 	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
